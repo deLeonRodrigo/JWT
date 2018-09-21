@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JWT2_.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -19,6 +20,7 @@ namespace JWT2_
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+            config.MessageHandlers.Add(new TokenValidationHandler());
         }
     }
 }

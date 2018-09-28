@@ -19,13 +19,6 @@ namespace JWT2_.Controllers
         public class CustomersController : ApiController
         {
             [HttpGet]
-            public IHttpActionResult GetId(int id)
-            {
-                var customerFake = "customer-fake";
-                return Ok(customerFake);
-            }
-
-            [HttpGet]
             public IEnumerable<Student> Get()
             {
                 ObservableCollection<Student> products = new ObservableCollection<Student>();
@@ -52,7 +45,7 @@ namespace JWT2_.Controllers
                 if (dtr != null) { dtr.Close(); dtr.Dispose(); }
                 return products;
             }
-
+            [HttpGet]
             public Student Get(int id)
             {
                 Conexion _conexion = new Conexion();

@@ -1,9 +1,13 @@
-const requestPr = require('request-promise')
+const requestPr = require('request-promise');
 const readline = require('readline-sync');
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
+localStorage.clear();
 const snooze = ms => new Promise(resolve => setTimeout(resolve, ms));
 var name = readline.question("usuario? ");
 var password = readline.question("contrasennia? ");
-var token;
 var url = 'http://localhost:81/JWT2_';
 var userJSON = { "Username": name, "Password": password};
 const options = {
@@ -16,13 +20,13 @@ const options = {
 function getStudents(opciones){
     requestPr(opciones).then((response) => {
         response = JSON.parse(response);
-        for(var i = 0; i < response.length; i++) console.log(response[i]);
+        console.log(response);
     });
 };
 const main = async () => {
     requestPr(options)
     .then((response) => {
-        token = response;
+        localStorage.setItem('token', response);
     })
     .catch((exception) => {
         console.log(exception);
@@ -30,9 +34,9 @@ const main = async () => {
     await snooze(200);
     const optionsG = {
         method: 'GET',
-        uri: url + '/api/customers',
+        uri: url + '/api/customers?id=' + '1',
         headers: {
-            'Authorization': token
+            'Authorization': localStorage.getItem('token')
         }
     }; 
     do{

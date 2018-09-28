@@ -1,0 +1,79 @@
+html
+    head
+        script.
+            function update(){
+                var req = new XMLHttpRequest();
+                req.open("GET","/crud");
+                req.onreadystatechange = function(){
+                    if(req.readyState == 4){
+                        document.getElementById("displayUsers").innerHTML = req.responseText;
+                    }
+                }
+                req.send();
+            };
+            function inactivityTime () {
+                var t;
+                window.onload = resetTimer;
+                document.onmousemove = resetTimer;
+                document.onkeypress = resetTimer;
+
+                function resetTimer() {
+                    clearTimeout(t);
+                    t = setTimeout(() => {
+                        if (confirm("Desea continuar (OK) o Salir (Cancelar)")) {
+                            resetTimer;
+                        } else {
+                            logout();
+                        }  
+                    }, 6000)
+                }
+            };
+            function logout(){
+                location.href = '/';
+            };
+            inactivityTime();
+    body
+    if 1 != null
+        #displayUsers
+            h1 CRUD de Alumnos #{token}
+            if Students != null
+                h1 Estudiantes
+                each Student in Students
+                    table(border = 1)
+                        tr 
+                            td Id: 
+                            td #{Student.IdStudent}
+                        tr 
+                            td Nombre: 
+                            td #{Student.Name}
+                        tr 
+                            td Apellido: 
+                            td #{Student.LastName} #{Student.LastNameM}
+                        tr 
+                            td Fecha de nacimiento: 
+                            td #{Student.DOB}
+                    br
+            input(type="button",value="Update",onclick="update()")
+        #userId
+            h1 Busca por Id
+            if Std != null
+                table(border = 1)
+                    tr 
+                        td Id: 
+                        td #{Std.IdStudent}
+                    tr 
+                        td Nombre: 
+                        td #{Std.Name}
+                    tr 
+                        td Apellido: 
+                        td #{Std.LastName} #{Std.LastNameM}
+                    tr 
+                        td Fecha de nacimiento: 
+                        td #{Std.DOB}
+            form(id='form-Search' method='POST' action='getId')
+                div.form-group
+                label(for='id') Id Estudiante:
+                input#name.form-control(type='text', name='id')
+                button.btn.btn-primary(type='submit') Buscar
+    else   
+        h1 NO AUTORIZADO
